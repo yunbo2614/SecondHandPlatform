@@ -1,0 +1,61 @@
+# ========================================
+# Go Backend .gitignore
+# ========================================
+
+# 环境变量文件（包含敏感信息，不提交）
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Go 编译文件
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go 工作空间文件
+go.work
+
+# 依赖目录
+/vendor/
+
+# IDE 配置
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# 日志文件
+*.log
+logs/
+
+# Google Cloud 服务账号密钥
+*.json
+!go.mod
+!go.sum
+
+# 临时文件
+tmp/
+temp/
+
+# 构建输出
+/bin/
+/build/
+/dist/
+
+# 测试覆盖率
+*.coverprofile
+coverage.html
+coverage.out
+
+# 调试文件
+__debug_bin
+
+# Air 热重载
+tmp/
