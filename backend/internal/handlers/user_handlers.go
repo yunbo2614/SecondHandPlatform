@@ -32,7 +32,8 @@ type AuthResponse struct {
 
 // registerHandler 用户注册
 func registerHandler(w http.ResponseWriter, r *http.Request) {
-	// 1. 解析请求体
+	// 1. 解析 request body
+	// request（json的字节数据流） --> 我们自己定义的数据结构 RegisterRequest
 	var req RegisterRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		utils.SendErrorResponse(w, http.StatusBadRequest, "Invalid request body")

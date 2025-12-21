@@ -1,21 +1,45 @@
 package handlers
 
 import (
-	"net/http"
+	"backend/internal/middleware"
 
 	"github.com/gorilla/mux"
 )
 
+// InitRouter 初始化路由
+// 注意，这里只是注册路由，不是真正实际运行时的调用过程
+// router 是用来构建调用链的
 func InitRouter() *mux.Router {
-    router := mux.NewRouter() // create a new router
-    // 这里只是登记，不是实际执行，相当于告诉路由器如何处理请求，相当于在router内部创建了一个映射表
-    router.Handle("/login", http.HandlerFunc(loginHandler)).Methods("POST") // register loginHandler for POST /login
-    router.Handle("/register", http.HandlerFunc(registerHandler)).Methods("POST") // register registerHandler for POST /register
-    return router // rounter is a pointer, so no need to take address
-    // 真正在执行时
-    // router会自动创建w和r
-    // w := 创建一个响应写入器
-    // r := 从 HTTP 请求创建 Request 对象
-    // 然后去调用对应的handler函数，并且传入w和r
-    // 函数执行完后 router 会把
+	router := mux.NewRouter()
+
+	// 应用 CORS 中间件到所有路由（必须放在最前面）
+	router.Use(middleware.CORSMiddleware)
+
+	// ========================================
+	// 公开路由（不需要登录）
+	// ========================================
+	router.HandleFunc("/register", registerHandler).Methods("POST")
+	router.HandleFunc("/login", loginHandler).Methods("POST")
+	// router.HandleFunc("/posts", getPostsHandler).Methods("GET") // 浏览所有商品（公开）
+
+	// ========================================
+	// 受保护的路由（需要登录）
+	// ========================================
+	// 创建受保护的子路由器
+	protected := router.PathPrefix("/").Subrouter()
+	
+	// 应用认证中间件到所有受保护的路由
+	protected.Use(middleware.AuthMiddleware)
+
+	// 商品相关路由（需要认证）
+	// protected.HandleFunc("/posts", createPostHandler).Methods("POST")           // 发布商品
+	// protected.HandleFunc("/posts/{id}", getPostByIDHandler).Methods("GET")      // 获取商品详情
+	// protected.HandleFunc("/posts/{id}", updatePostHandler).Methods("PUT")       // 更新商品
+	// protected.HandleFunc("/posts/{id}", deletePostHandler).Methods("DELETE")    // 删除商品
+	// protected.HandleFunc("/my-listings", myListingsHandler).Methods("GET")      // 我的商品列表
+
+	// 上传相关路由（需要认证）
+	// protected.HandleFunc("/upload", uploadImageHandler).Methods("POST")         // 上传图片
+
+	return router
 }
