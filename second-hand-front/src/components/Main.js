@@ -15,7 +15,7 @@ function ProtectedRoute({ isLoggedIn, children }) {
   return children;
 }
 
-function Main({ isLoggedIn, handleLoggedIn }) {
+function Main({ isLoggedIn, handleLoggedIn, handleLogout }) {
   return (
     <div className="main">
       <Routes>
@@ -79,7 +79,7 @@ function Main({ isLoggedIn, handleLoggedIn }) {
           path="/item/:id"
           element={
             <ProtectedRoute isLoggedIn={isLoggedIn}>
-              <ItemDetail />
+              <ItemDetail handleLogout={handleLogout} />
             </ProtectedRoute>
           }
         />

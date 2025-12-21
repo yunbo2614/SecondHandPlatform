@@ -21,11 +21,11 @@ function App() {
     setIsLoggedIn(true);
   };
 
-  // const handleLogout = () => {
-  //   localStorage.removeItem(TOKEN_KEY);
-  //   setIsLoggedIn(false);
-  // };
-  // maybe add this to navigation bar?
+  const handleLogout = () => {
+    localStorage.removeItem(TOKEN_KEY);
+    setIsLoggedIn(false);
+  };
+
 
   return (
     <div className="app">
