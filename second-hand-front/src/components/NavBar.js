@@ -23,7 +23,7 @@ function NavBar({ handleLogout }) {
       position="static"
       elevation={0}
       sx={{
-        backgroundColor: "#7cf26cff", // light blue
+        backgroundColor: "#7cf26cff", // light blue?
         color: "#000000ff",
         borderBottom: "1px solid #bbdefb",
       }}
