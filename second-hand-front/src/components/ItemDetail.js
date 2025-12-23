@@ -10,6 +10,7 @@
 //   "negotiable": true,
 //   "seller": "name",
 //   "createdAt": "2026-01-01T10:30:00Z"
+//   "sold": true,
 // }
 
 import React, { useEffect, useMemo, useState } from "react";
@@ -26,6 +27,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Alert from "@mui/material/Alert";
 import ButtonBase from "@mui/material/ButtonBase";
 import Divider from "@mui/material/Divider";
+import Chip from "@mui/material/Chip";
 
 import { BASE_URL } from "../constants";
 
@@ -169,7 +171,8 @@ function ItemDetail({ handleLogout }) {
                   borderRadius: 1.2,
                   overflow: "hidden",
                   border: "1px solid",
-                  borderColor: selectedImage === img ? "primary.main" : "divider",
+                  borderColor:
+                    selectedImage === img ? "primary.main" : "divider",
                   flex: "0 0 auto",
                 }}
               >
@@ -220,20 +223,37 @@ function ItemDetail({ handleLogout }) {
               borderRadius: 2,
             }}
           >
-            <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-              {displayName}
-            </Typography>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+                {displayName}
+              </Typography>
+
+              {item.sold && (
+                <Chip
+                  label="SOLD"
+                  color="error"
+                  size="small"
+                  sx={{ fontWeight: 800 }}
+                />
+              )}
+            </Box>
 
             <Divider sx={{ my: 1.5 }} />
 
-            <InfoRow label="Post by" value={item.seller || item.postBy || item.ownerName} />
+            <InfoRow
+              label="Post by"
+              value={item.seller || item.postBy || item.ownerName}
+            />
             <InfoRow label="Date" value={item.date || item.createdAt} />
 
             <Box sx={{ mt: 2 }}>
               <Typography variant="body2" sx={{ fontWeight: 700, mb: 0.5 }}>
                 Description:
               </Typography>
-              <Typography variant="body2" sx={{ whiteSpace: "pre-wrap", color: "text.secondary" }}>
+              <Typography
+                variant="body2"
+                sx={{ whiteSpace: "pre-wrap", color: "text.secondary" }}
+              >
                 {item.description || "-"}
               </Typography>
             </Box>
@@ -257,7 +277,10 @@ function InfoRow({ label, value }) {
       <Typography variant="body2" sx={{ fontWeight: 600, minWidth: 90 }}>
         {label}:
       </Typography>
-      <Typography variant="body2" sx={{ color: "text.secondary", wordBreak: "break-word" }}>
+      <Typography
+        variant="body2"
+        sx={{ color: "text.secondary", wordBreak: "break-word" }}
+      >
         {value ?? "-"}
       </Typography>
     </Box>
