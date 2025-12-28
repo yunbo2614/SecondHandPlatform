@@ -1,12 +1,13 @@
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
-import Login from "./Login";
-import Register from "./Register";
+import ItemDetail from "./ItemDetail";
 import Items from "./Items";
+import Login from "./Login";
 import MyListings from "./MyListings";
 import Sell from "./Sell";
-import ItemDetail from "./ItemDetail";
+import SignUp from "./SignUp";
+
 
 function ProtectedRoute({ isLoggedIn, children }) {
   if (!isLoggedIn) {
@@ -30,6 +31,7 @@ function Main({ isLoggedIn, handleLoggedIn, handleLogout }) {
           }
         />
 
+        {/* 登录页面 */}
         <Route
           path="/login"
           element={
@@ -44,19 +46,21 @@ function Main({ isLoggedIn, handleLoggedIn, handleLogout }) {
         <Route
           path="/register"
           element={
-            isLoggedIn ? <Navigate to="/items" replace /> : <Register />
+            isLoggedIn ? <Navigate to="/items" replace /> : <SignUp />
           }
         />
 
-        <Route
-          path="/items"
-          element={
-            <ProtectedRoute isLoggedIn={isLoggedIn}>
-              <Items />
-            </ProtectedRoute>
-          }
-        />
+        {/*<Route*/}
+        {/*  path="/items"*/}
+        {/*  element={*/}
+        {/*    <ProtectedRoute isLoggedIn={isLoggedIn}>*/}
+        {/*      <Items />*/}
+        {/*    </ProtectedRoute>*/}
+        {/*  }*/}
+        {/*/>*/}
+          <Route path="/items" element={<Items />} />
 
+        {/* 我的发布 */}
         <Route
           path="/mylistings"
           element={

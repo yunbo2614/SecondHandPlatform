@@ -1,0 +1,98 @@
+.sell-page {
+  min-height: 100vh;
+  background: #f5f7fb;
+}
+
+.sell-wrap {
+  max-width: 980px;
+  margin: 28px auto 0;
+  padding: 0 16px;
+}
+
+.sell-card {
+  border-radius: 14px;
+  box-shadow: 0 6px 22px rgba(15, 23, 42, 0.08);
+}
+
+.req {
+  color: red;
+  margin-left: 4px;
+}
+
+.sell-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.sell-row-label {
+  font-weight: 600;
+  color: #111;
+}
+
+.sell-row-field {
+  width: 100%;
+}
+
+.sell-upload-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px 0 10px;
+}
+
+.sell-upload-hint {
+  width: 100%;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #111;
+}
+
+.sell-dragger {
+  width: 100%;
+  border-radius: 12px !important;
+}
+
+.sell-upload-count {
+  width: 100%;
+  margin-top: 8px;
+  color: #64748b;
+  font-size: 12px;
+  text-align: right;
+}
+
+.sell-bottom-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+  align-items: end;
+}
+
+@media (max-width: 820px) {
+  .sell-row {
+    grid-template-columns: 1fr;
+  }
+  .sell-bottom-row {
+    grid-template-columns: 1fr;
+  }
+  .sell-upload-hint,
+  .sell-dragger,
+  .sell-upload-count {
+    width: 100%;
+  }
+}
+
+.sell-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.sell-actions-note {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #64748b;
+}

@@ -14,4 +14,5 @@ export const mockItem = {
   negotiable: true,
   seller: "the seller",
   createdAt: "2025-12-20T10:30:00Z",
+  sold: true,
 };
