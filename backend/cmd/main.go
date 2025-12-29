@@ -36,7 +36,7 @@ func main() {
 	fmt.Println("✅ Router initialized")
 
 	// 5. 启动 HTTP 服务器
-	port := config.AppConfig.ServerPort
+	port := config.AppConfig.ServerPort //8080
 	fmt.Printf("🌐 Server listening on http://localhost:%s\n", port)
 	log.Fatal(http.ListenAndServe(":"+port, router))
 }

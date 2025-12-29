@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"io"
 	"mime/multipart"
+	"os"
 	"path/filepath"
 	"time"
 
 	"backend/internal/config"
 
 	"cloud.google.com/go/storage"
-	"google.golang.org/api/option"
 )
 
 var gcsClient *storage.Client
@@ -20,8 +20,18 @@ var gcsClient *storage.Client
 func InitGCS() error {
 	ctx := context.Background()
 
-	// 使用服务账号 JSON 文件创建客户端
-	client, err := storage.NewClient(ctx, option.WithCredentialsFile(config.AppConfig.GoogleCredentialsPath))
+	var client *storage.Client
+	var err error
+
+	// 如果配置了凭证文件路径，使用文件认证（本地开发）
+	if config.AppConfig.GoogleCredentialsPath != "" {
+		// 设置环境变量（推荐方式）
+		os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", config.AppConfig.GoogleCredentialsPath)
+	}
+
+	// 使用 Application Default Credentials
+	// 优先级：环境变量 > 服务账号（GCP上）> gcloud 配置
+	client, err = storage.NewClient(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to create GCS client: %w", err)
 	}

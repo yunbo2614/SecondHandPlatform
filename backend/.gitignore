@@ -59,3 +59,9 @@ __debug_bin
 
 # Air 热重载
 tmp/
+
+# 服务账号密钥（敏感信息）
+service-account-key.json
+*.json
+credentials/
+.env
