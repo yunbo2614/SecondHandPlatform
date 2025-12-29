@@ -42,7 +42,8 @@ function Items(props) {
                     <Grid item xs={12} sm={6} md={3} key={item.id}>
                     {/*Item* card Placeholder*/}
                         <Box
-                            onClick={() => navigate(`/itemDetail/${item.id}`)}
+                            //onClick={() => navigate(`/itemDetail/${item.id}`)}
+                            onClick={() => navigate(`/item/${item.id}`)}
                             sx={{
                                 cursor: "pointer",
                                 "&:hover": {
