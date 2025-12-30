@@ -18,7 +18,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { TOKEN_KEY } from "../constants";
 
-import NavBar from "./NavBar";
+import NavBar from "./NavBarNew";
 
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -141,7 +141,7 @@ function ItemDetail({ handleLogout }) {
 
   return (
     <Box>
-      <NavBar handleLogout={handleLogout} />
+      <NavBar/>
 
       <Box sx={{ maxWidth: 1100, mx: "auto", mt: 3, px: 2 }}>
         <Box

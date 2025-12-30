@@ -1,0 +1,123 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 72px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.brand-logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #000, #555);
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 800;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.16);
+}
+
+.brand-logo.small {
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.brand-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: rgba(0, 0, 0, 0.88);
+}
+
+.brand-subtitle {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.navbar-menu {
+  background: transparent;
+  border-bottom: none;
+  font-weight: 600;
+  min-width: 360px;
+}
+
+.ant-menu-horizontal > .ant-menu-item {
+  border-radius: 999px;
+  margin: 0 6px;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.post-btn {
+  border-radius: 999px;
+  height: 38px;
+  padding: 0 16px;
+  font-weight: 600;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+.logout-btn {
+  border-radius: 999px;
+  height: 38px;
+  padding: 0 14px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.65);
+  border-color: rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(10px);
+}
+
+.mobile-menu-btn {
+  display: none;
+  border-radius: 12px;
+  height: 40px;
+  width: 44px;
+}
+
+.drawer-title {
+  font-weight: 800;
+}
+
+.drawer-menu {
+  font-weight: 600;
+  border-inline-end: none;
+}
+
+@media (max-width: 860px) {
+  .navbar-menu,
+  .navbar-actions {
+    display: none;
+  }
+
+  .mobile-menu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

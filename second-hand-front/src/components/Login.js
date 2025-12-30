@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { BASE_URL } from "../constants";
-import NavBarForLogin from "./NavBarForLogin";
+import NavBar from "./NavBarNew";
 // 1. 引入 useNavigate 用于页面跳转
 import { useNavigate } from "react-router-dom";
 
@@ -55,7 +55,7 @@ function Login({ handleLoggedIn }) {
 
     return (
         <>
-            <NavBarForLogin />
+            <NavBar />
             <Box
                 sx={{
                     minHeight: "calc(80vh - 70px)",
@@ -111,7 +111,7 @@ function Login({ handleLoggedIn }) {
                             variant="outlined"
                             fullWidth
                             // 3. 绑定跳转到 /register 的逻辑
-                            onClick={() => navigate("/register")}
+                            onClick={() => navigate("/signup")}
                             sx={{ 
                                 borderRadius: '25px', 
                                 textTransform: 'none',

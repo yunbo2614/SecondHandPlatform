@@ -19,13 +19,8 @@ function App() {
   const handleLoggedIn = (token) => {
     if (token) {
       localStorage.setItem(TOKEN_KEY, token);
+      setIsLoggedIn(true);
     }
-    setIsLoggedIn(true);
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem(TOKEN_KEY);
-    setIsLoggedIn(false);
   };
 
   return (

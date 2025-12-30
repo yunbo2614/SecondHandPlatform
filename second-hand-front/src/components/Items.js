@@ -2,7 +2,7 @@ import React from "react";
 // import axios from "axios"
 // import { BASE_URL } from "../constants";
 // api: GET /items
-import NavBar from "./NavBar";
+import NavBar from "./NavBarNew";
 
 import{
     Box,

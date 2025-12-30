@@ -15,7 +15,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { TOKEN_KEY, BASE_URL } from "../constants";
 
-import NavBar from "./NavBar";
+import NavBar from "./NavBarNew";
 import "../styles/Sell.css";
 
 import { InboxOutlined } from "@ant-design/icons";
@@ -129,7 +129,7 @@ function Sell({ handleLogout }) {
 
   return (
     <div className="sell-page">
-      <NavBar handleLogout={handleLogout} />
+      <NavBar />
 
       <div className="sell-wrap">
         <Card className="sell-card" title="Publish a New Item" bordered={false}>

@@ -8,22 +8,30 @@ import MyListings from "./MyListings";
 import Sell from "./Sell";
 import SignUp from "./SignUp";
 
+function ProtectedRoute({ children }) {
+  const token =
+    localStorage.getItem("token") || sessionStorage.getItem("token");
 
-function ProtectedRoute({ isLoggedIn, children }) {
-  if (!isLoggedIn) {
+  if (!token) {
     return <Navigate to="/login" replace />;
   }
+
   return children;
 }
 
-function Main({ isLoggedIn, handleLoggedIn, handleLogout }) {
+function Main({ handleLoggedIn, handleLogout }) {
+  const token =
+    localStorage.getItem("token") || sessionStorage.getItem("token");
+
+  const hasToken = !!token;
+
   return (
     <div className="main">
       <Routes>
         <Route
           path="/"
           element={
-            isLoggedIn ? (
+            hasToken ? (
               <Navigate to="/items" replace />
             ) : (
               <Navigate to="/login" replace />
@@ -31,11 +39,10 @@ function Main({ isLoggedIn, handleLoggedIn, handleLogout }) {
           }
         />
 
-        {/* 登录页面 */}
         <Route
           path="/login"
           element={
-            isLoggedIn ? (
+            hasToken ? (
               <Navigate to="/items" replace />
             ) : (
               <Login handleLoggedIn={handleLoggedIn} />
@@ -44,27 +51,23 @@ function Main({ isLoggedIn, handleLoggedIn, handleLogout }) {
         />
 
         <Route
-          path="/register"
+          path="/signup"
+          element={hasToken ? <Navigate to="/items" replace /> : <SignUp />}
+        />
+
+        <Route
+          path="/items"
           element={
-            isLoggedIn ? <Navigate to="/items" replace /> : <SignUp />
+            <ProtectedRoute>
+              <Items />
+            </ProtectedRoute>
           }
         />
 
-        {/*<Route*/}
-        {/*  path="/items"*/}
-        {/*  element={*/}
-        {/*    <ProtectedRoute isLoggedIn={isLoggedIn}>*/}
-        {/*      <Items />*/}
-        {/*    </ProtectedRoute>*/}
-        {/*  }*/}
-        {/*/>*/}
-          <Route path="/items" element={<Items />} />
-
-        {/* 我的发布 */}
         <Route
           path="/mylistings"
           element={
-            <ProtectedRoute isLoggedIn={isLoggedIn}>
+            <ProtectedRoute>
               <MyListings />
             </ProtectedRoute>
           }
@@ -73,7 +76,7 @@ function Main({ isLoggedIn, handleLoggedIn, handleLogout }) {
         <Route
           path="/sell"
           element={
-            <ProtectedRoute isLoggedIn={isLoggedIn}>
+            <ProtectedRoute>
               <Sell />
             </ProtectedRoute>
           }
@@ -82,13 +85,22 @@ function Main({ isLoggedIn, handleLoggedIn, handleLogout }) {
         <Route
           path="/item/:id"
           element={
-            <ProtectedRoute isLoggedIn={isLoggedIn}>
+            <ProtectedRoute>
               <ItemDetail handleLogout={handleLogout} />
             </ProtectedRoute>
           }
         />
 
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route
+          path="*"
+          element={
+            hasToken ? (
+              <Navigate to="/items" replace />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
       </Routes>
     </div>
   );
