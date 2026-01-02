@@ -18,8 +18,8 @@ func InitRouter() *mux.Router {
 	// ========================================
 	// 公开路由（不需要登录）
 	// ========================================
-	router.HandleFunc("/register", registerHandler).Methods("POST")
-	router.HandleFunc("/login", loginHandler).Methods("POST")
+	router.HandleFunc("/register", registerHandler).Methods("POST", "OPTIONS")
+	router.HandleFunc("/login", loginHandler).Methods("POST", "OPTIONS")
 
 	// ========================================
 	// 受保护的路由（需要登录）
@@ -31,13 +31,13 @@ func InitRouter() *mux.Router {
 	protected.Use(middleware.AuthMiddleware)
 
 	// 商品相关路由（需要认证）
-	protected.HandleFunc("/items", getPostsHandler).Methods("GET")             // 浏览所有商品（需要登录）
-	protected.HandleFunc("/item/{id}", getPostByIDHandler).Methods("GET")      // 获取商品详情
-	protected.HandleFunc("/item/{id}", deletePostHandler).Methods("DELETE")    // 删除商品（软删除）
-	protected.HandleFunc("/mylistings", myListingsHandler).Methods("GET")      // 我的商品列表
+	protected.HandleFunc("/items", getPostsHandler).Methods("GET", "OPTIONS")             // 浏览所有商品（需要登录）
+	protected.HandleFunc("/item/{id}", getPostByIDHandler).Methods("GET", "OPTIONS")      // 获取商品详情
+	protected.HandleFunc("/item/{id}", deletePostHandler).Methods("DELETE", "OPTIONS")    // 删除商品（软删除）
+	protected.HandleFunc("/mylistings", myListingsHandler).Methods("GET", "OPTIONS")      // 我的商品列表
 
 	// 上传相关路由（需要认证）
-	protected.HandleFunc("/upload", uploadNewPostHandler).Methods("POST")      // 上传新商品（含图片）
+	protected.HandleFunc("/upload", uploadNewPostHandler).Methods("POST", "OPTIONS")      // 上传新商品（含图片）
 
 	return router
 }

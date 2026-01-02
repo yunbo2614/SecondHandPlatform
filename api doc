@@ -8,7 +8,7 @@ get all available items: pic, post by, date, item name, etc.
 Get detailed info for item by id: pics, post by, date, item name, description, etc.
 5. My listings: GET /mylistings
 Return all my listed items: item name, date, etc.
-DELETE /item/{id}
+6. DELETE /item/{id}
 Delete an item
-6. Post a new item: POST/items
+7. Post a new item: POST/items
 Create a new item. take: pics, item name, description, etc.

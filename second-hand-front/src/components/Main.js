@@ -8,7 +8,6 @@ import MyListings from "./MyListings";
 import Sell from "./Sell";
 import SignUp from "./SignUp";
 
-
 function ProtectedRoute({ isLoggedIn, children }) {
   if (!isLoggedIn) {
     return <Navigate to="/login" replace />;
@@ -45,20 +44,17 @@ function Main({ isLoggedIn, handleLoggedIn, handleLogout }) {
 
         <Route
           path="/register"
-          element={
-            isLoggedIn ? <Navigate to="/items" replace /> : <SignUp />
-          }
+          element={isLoggedIn ? <Navigate to="/items" replace /> : <SignUp />}
         />
 
-        {/*<Route*/}
-        {/*  path="/items"*/}
-        {/*  element={*/}
-        {/*    <ProtectedRoute isLoggedIn={isLoggedIn}>*/}
-        {/*      <Items />*/}
-        {/*    </ProtectedRoute>*/}
-        {/*  }*/}
-        {/*/>*/}
-          <Route path="/items" element={<Items />} />
+        <Route
+          path="/items"
+          element={
+            <ProtectedRoute isLoggedIn={isLoggedIn}>
+              <Items />
+            </ProtectedRoute>
+          }
+        />
 
         {/* 我的发布 */}
         <Route
