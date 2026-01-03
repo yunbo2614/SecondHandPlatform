@@ -13,7 +13,7 @@ import "../styles/NavBarNew.css";
 
 const { Header } = Layout;
 const { Text } = Typography;
-const AUTH_ROUTES = ["/login", "/signup"];
+const AUTH_ROUTES = ["/login", "/register"]; //fixed display bug
 
 function NavBar() {
   const navigate = useNavigate();

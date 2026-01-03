@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from "react"; // React核心库和Hooks
 import axios from "axios"; // HTTP请求库，用于调用后端API
 import { BASE_URL, TOKEN_KEY } from "../constants"; // 后端API基础URL和Token键名
-import NavBar from "./NavBar"; // 导航栏组件
+import NavBar from "./NavBarNew"; // 导航栏组件
 
 // Material-UI组件库：提供美观的UI组件
 import {

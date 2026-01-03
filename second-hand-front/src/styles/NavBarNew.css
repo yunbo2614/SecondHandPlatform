@@ -75,12 +75,24 @@
   gap: 10px;
 }
 
+/* consistent yellow theme*/
 .post-btn {
   border-radius: 999px;
   height: 38px;
   padding: 0 16px;
   font-weight: 600;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+  background-color: #ffda00;
+  border-color: #ffda00;
+  color: #000;
+}
+
+.post-btn:hover,
+.post-btn:focus,
+.post-btn:active {
+  background-color: #e6c500 !important;
+  border-color: #e6c500 !important;
+  color: #000 !important;
 }
 
 .logout-btn {

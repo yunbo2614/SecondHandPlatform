@@ -4,7 +4,7 @@
 import axios from "axios"; // HTTP请求库，用于调用后端API
 import React, { useState } from "react"; // React核心库和状态管理Hook
 import { BASE_URL } from "../constants"; // 后端API基础URL（http://localhost:8080）
-import NavBarForLogin from "./NavBarForLogin"; // 登录页面的导航栏组件
+import NavBar from "./NavBarNew"; // 登录页面的导航栏组件
 import { useNavigate } from "react-router-dom"; // 路由导航Hook，用于页面跳转
 
 // Material-UI组件库：提供美观的UI组件
@@ -85,7 +85,7 @@ function Login({ handleLoggedIn }) {
   return (
     <>
       {/* 顶部导航栏 */}
-      <NavBarForLogin />
+      <NavBar />
 
       {/* 主容器：垂直和水平居中 */}
       <Box

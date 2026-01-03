@@ -148,6 +148,9 @@ function MyListings() {
 
   if (loading)
     return (
+  <>
+  {/* for consistence, keep NavBar even page is loading */}
+  <NavBar />
       <Box
         sx={{
           display: "flex",
@@ -158,6 +161,7 @@ function MyListings() {
       >
         <CircularProgress />
       </Box>
+    </>
     );
 
   return (
@@ -175,7 +179,7 @@ function MyListings() {
           <Typography variant="h4" sx={{ fontWeight: "bold" }}>
             My Listings
           </Typography>
-          <Button
+          {/* <Button
             variant="contained"
             sx={{
               bgcolor: "#FFDA00",
@@ -187,7 +191,7 @@ function MyListings() {
             onClick={() => navigate("/sell")} // Navigates to the Sell page
           >
             + Post New Item
-          </Button>
+          </Button> */}
         </Box>
 
         {error && (

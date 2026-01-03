@@ -11,8 +11,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // 1. 引入跳转钩子
 import "../styles/SignUp.css";
 
-// import NavBar from "./NavBarNew";
-import NavBar from "../components/NavBarForLogin"; // updated by Xuanbo
+import NavBar from "./NavBarNew";
+//import NavBar from "../components/NavBarForLogin"; // updated by Xuanbo
 const SignUp = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -135,7 +135,11 @@ const SignUp = () => {
                   borderRadius: "25px",
                   textTransform: "none",
                   color: "#333",
-                  borderColor: "#ddd",
+                   borderColor: "#FFDA00",
+                   "&:hover": {
+                  borderColor: "#e6c500",
+                  backgroundColor: "#fffbe6",
+                },
                 }}
               >
                 Already have an account? Login
@@ -152,7 +156,7 @@ const SignUp = () => {
                   bgcolor: "#FFDA00",
                   color: "#000",
                   fontWeight: "bold",
-                  "&:hover": { bgcolor: "#e6c500" },
+                  "&:hover": { bgcolor: "#e6c500" }, // consitent design
                 }}
               >
                 {loading ? "Registering..." : "Register"}

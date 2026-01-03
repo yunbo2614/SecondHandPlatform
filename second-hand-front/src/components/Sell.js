@@ -1,12 +1,12 @@
-// api POST /items
+// api POST /upload (POST /items)
 // Authorization: Bearer <token>
 // {
 //   "title": "Used Laptop",
 //   "description": "Good condition, lightly used. Includes charger.",
-//   "contact": "seller@email.com",
-//   "price": 300,
+//   "contact_info": "seller@email.com",
+//   "price": "300",
 //   "negotiable": true,
-//   "zipCode": "12345",
+//   "zip_code": "12345",
 // }
 // images: multipart/form-data
 
@@ -102,16 +102,16 @@ function Sell({ handleLogout }) {
       const fd = new FormData();
       fd.append("title", values.title);
       fd.append("description", values.description);
-      fd.append("contact", values.contact);
+      fd.append("contact_info", values.contact);
       fd.append("price", String(values.price));
       fd.append("negotiable", String(values.negotiable));
-      fd.append("zipCode", values.zipCode);
+      fd.append("zip_code", values.zipCode);
 
       fileList.forEach((f) => {
         if (f.originFileObj) fd.append("images", f.originFileObj);
       });
 
-      await axios.post(`${BASE_URL}/items`, fd, {
+      await axios.post(`${BASE_URL}/upload`, fd, { // POST /items
         headers: {
           Authorization: `Bearer ${token}`,
         },
