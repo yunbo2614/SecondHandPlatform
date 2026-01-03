@@ -161,7 +161,8 @@ function ItemDetail({ handleLogout }) {
   // ========================================
   return (
     <Box>
-      <NavBar/>
+      {/* 修复：添加缺失的 handleLogout 属性 */}
+      <NavBar handleLogout={handleLogout}/>
 
       <Box sx={{ maxWidth: 1100, mx: "auto", mt: 3, px: 2 }}>
         <Box

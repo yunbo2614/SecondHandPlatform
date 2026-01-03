@@ -19,7 +19,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+
 import axios from "axios";
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // Added for navigation
 import { BASE_URL, TOKEN_KEY } from "../constants";
@@ -27,16 +29,16 @@ import { BASE_URL, TOKEN_KEY } from "../constants";
 import NavBar from "./NavBarNew";
 
 function MyListings() {
-  const [listings, setListings] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [listings, setListings] = useState([]); // User's listings state 用户的商品列表，储存从后端获取的数据
+  const [loading, setLoading] = useState(true); // Loading state 页面是否处于加载中
+  const [error, setError] = useState(""); // Error state
 
   // Initialize navigation hook
   const navigate = useNavigate();
 
   // State for edit modal
-  const [openEdit, setOpenEdit] = useState(false);
-  const [editingItem, setEditingItem] = useState({
+  const [openEdit, setOpenEdit] = useState(false);// the status of the editing window
+  const [editingItem, setEditingItem] = useState({//
     id: "",
     title: "",
     price: "",
@@ -45,7 +47,7 @@ function MyListings() {
 
   const token = localStorage.getItem(TOKEN_KEY);
 
-  useEffect(() => {
+  useEffect(() => { // Fetch user's listings on component mount
     const fetchMyListings = async () => {
       try {
         setLoading(true);
@@ -76,9 +78,9 @@ function MyListings() {
 
         // Real API request to fetch user-specific listings
         const response = await axios.get(`${BASE_URL}/mylistings`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${token}` },// attach token for authentication
         });
-        setListings(response.data);
+        setListings(response.data); //fetch data from backend to the listings state(array type)
       } catch (err) {
         console.error("Fetch error:", err);
         setError("Failed to connect to server. Ensure backend is running.");
@@ -93,7 +95,7 @@ function MyListings() {
       setError("No token found. Please log in first.");
       setLoading(false);
     }
-  }, [token]);
+  }, [token]);  // Dependency on token ensures re-fetch if token changes
 
   // Handle item deletion from both UI and Database
   const handleDelete = async (id) => {
@@ -101,6 +103,7 @@ function MyListings() {
       // Optimistic UI update: remove item from state immediately
       const updatedListings = listings.filter((item) => item.id !== id);
       setListings(updatedListings);
+      //Backend deletion needed
 
       try {
         await axios.delete(`${BASE_URL}/item/${id}`, {
@@ -109,7 +112,7 @@ function MyListings() {
       } catch (err) {
         console.error("Delete failed on server:", err);
         alert("Server error: Could not delete item.");
-        // Re-fetch or revert state if necessary
+          // Re-fetch or revert state if necessary
       }
     }
   };
@@ -324,3 +327,4 @@ function MyListings() {
 }
 
 export default MyListings;
+
