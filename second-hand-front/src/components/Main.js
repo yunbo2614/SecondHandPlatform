@@ -5,7 +5,7 @@ import ItemDetail from "./ItemDetail";
 import Items from "./Items";
 import Login from "./Login";
 import MyListings from "./MyListings";
-import Sell from "./Sell";
+import Upload from "./Upload";
 import SignUp from "./SignUp";
 
 function ProtectedRoute({ isLoggedIn, children }) {
@@ -67,10 +67,10 @@ function Main({ isLoggedIn, handleLoggedIn, handleLogout }) {
         />
 
         <Route
-          path="/sell"
+          path="/upload"
           element={
             <ProtectedRoute isLoggedIn={isLoggedIn}>
-              <Sell />
+              <Upload />
             </ProtectedRoute>
           }
         />

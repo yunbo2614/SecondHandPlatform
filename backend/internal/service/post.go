@@ -215,5 +215,47 @@ func CreatePost(req CreatePostRequest) (*models.Post, error) {
 	return &post, nil
 }
 
+// UpdatePostRequest 更新商品请求
+type UpdatePostRequest struct {
+	PostID      int     // 商品ID
+	UserID      int     // 用户ID（用于权限验证）
+	Title       string  // 标题
+	Description string  // 描述
+	Price       float64 // 价格
+}
+
+// UpdatePost 更新商品信息（只允许修改title, description, price）
+func UpdatePost(req UpdatePostRequest) (*models.Post, error) {
+	db := database.GetDB()
+
+	// 1. 先查询该商品是否存在
+	var post models.Post
+	if err := db.First(&post, req.PostID).Error; err != nil {
+		return nil, err // 商品不存在
+	}
+
+	// 2. 验证该商品是否属于当前用户
+	if post.UserID != req.UserID {
+		return nil, fmt.Errorf("unauthorized: you can only edit your own posts")
+	}
+
+	// 3. 更新允许修改的字段
+	updates := map[string]interface{}{
+		"title":       req.Title,
+		"description": req.Description,
+		"price":       req.Price,
+	}
+
+	if err := db.Model(&post).Updates(updates).Error; err != nil {
+		return nil, err
+	}
+
+	// 4. 重新加载更新后的数据（包含用户信息）
+	if err := db.Preload("User").First(&post, req.PostID).Error; err != nil {
+		return nil, err
+	}
+
+	return &post, nil
+}
+
 // TODO: 实现其他商品相关的业务逻辑
-// - UpdatePost

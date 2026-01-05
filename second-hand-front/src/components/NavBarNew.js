@@ -23,7 +23,7 @@ function NavBar() {
 
   const selectedKey = useMemo(() => {
     if (location.pathname.startsWith("/mylistings")) return "mylistings";
-    if (location.pathname.startsWith("/sell")) return "sell";
+    if (location.pathname.startsWith("/upload")) return "upload";
     return "home";
   }, [location.pathname]);
 
@@ -74,7 +74,7 @@ function NavBar() {
               type="primary"
               icon={<PlusOutlined />}
               className="post-btn"
-              onClick={() => navigate("/sell")}
+              onClick={() => navigate("/upload")}
             >
               Post
             </Button>
@@ -125,12 +125,12 @@ function NavBar() {
               })),
               { type: "divider" },
               {
-                key: "sell",
+                key: "upload",
                 icon: <PlusOutlined />,
                 label: "Post",
                 onClick: () => {
                   setDrawerOpen(false);
-                  navigate("/sell");
+                  navigate("/upload");
                 },
               },
               {

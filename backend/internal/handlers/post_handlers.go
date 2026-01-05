@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"net/http"
 	"strconv"
 
@@ -159,6 +160,67 @@ func deletePostHandler(w http.ResponseWriter, r *http.Request) {
 	utils.SendSuccessWithMessage(w, "Post deleted successfully", nil)
 }
 
+// editPostHandler 编辑商品信息
+// PUT /edit/{id}
+func editPostHandler(w http.ResponseWriter, r *http.Request) {
+	// 1. 从 Context 中获取用户ID
+	userID, ok := r.Context().Value("userID").(int)
+	if !ok {
+		utils.SendErrorResponse(w, http.StatusUnauthorized, "User not authenticated")
+		return
+	}
+
+	// 2. 从 URL 中获取商品ID
+	vars := mux.Vars(r)
+	postIDStr := vars["id"]
+	postID, err := strconv.Atoi(postIDStr)
+	if err != nil {
+		utils.SendErrorResponse(w, http.StatusBadRequest, "Invalid post ID")
+		return
+	}
+
+	// 3. 解析请求体
+	var req struct {
+		Title       string  `json:"title"`
+		Description string  `json:"description"`
+		Price       float64 `json:"price"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		utils.SendErrorResponse(w, http.StatusBadRequest, "Invalid request body")
+		return
+	}
+
+	// 4. 验证必填字段
+	if req.Title == "" || req.Price <= 0 {
+		utils.SendErrorResponse(w, http.StatusBadRequest, "Title and valid price are required")
+		return
+	}
+
+	// 5. 调用 service 层更新商品
+	post, err := service.UpdatePost(service.UpdatePostRequest{
+		PostID:      postID,
+		UserID:      userID,
+		Title:       req.Title,
+		Description: req.Description,
+		Price:       req.Price,
+	})
+	if err != nil {
+		// 判断错误类型
+		if err.Error() == "record not found" {
+			utils.SendErrorResponse(w, http.StatusNotFound, "Post not found")
+			return
+		}
+		if err.Error() == "unauthorized: you can only edit your own posts" {
+			utils.SendErrorResponse(w, http.StatusForbidden, "You can only edit your own posts")
+			return
+		}
+		utils.SendErrorResponse(w, http.StatusInternalServerError, "Failed to update post: "+err.Error())
+		return
+	}
+
+	// 6. 返回成功响应
+	utils.SendSuccessWithMessage(w, "Post updated successfully", post)
+}
+
 // TODO: 实现其他商品相关的 handlers
-// - 创建商品
-// - 更新商品

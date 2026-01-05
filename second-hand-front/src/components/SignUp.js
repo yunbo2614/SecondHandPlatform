@@ -9,6 +9,7 @@ import {
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // 1. 引入跳转钩子
+import { BASE_URL, TOKEN_KEY } from "../constants";
 import "../styles/SignUp.css";
 
 import NavBar from "./NavBarNew";
@@ -40,18 +41,28 @@ const SignUp = () => {
     setError("");
 
     try {
-      // 这里的 URL 需对应你 constants.js 里的配置
-      const response = await axios.post("http://localhost:8080/register", {
+      // 发送注册请求到后端
+      const response = await axios.post(`${BASE_URL}/register`, {
         email: formData.email,
         username: formData.username,
         password: formData.password,
       });
 
-      alert("Registration Successful!");
-      navigate("/login"); // 注册成功后自动跳转登录
+      // 后端返回格式: { success: true, data: { token: "...", user: {...} } }
+      if (response.data.success) {
+        const { token } = response.data.data;
+        // 存储token到localStorage
+        localStorage.setItem(TOKEN_KEY, token);
+
+        alert("Registration Successful!");
+        navigate("/login"); // 注册成功后跳转登录页
+      } else {
+        setError("Registration failed. Please try again.");
+      }
     } catch (err) {
+      console.error("Registration error:", err);
       setError(
-        err.response?.data?.message || "Registration failed. Please try again."
+        err.response?.data?.error || "Registration failed. Please try again."
       );
     } finally {
       setLoading(false);
