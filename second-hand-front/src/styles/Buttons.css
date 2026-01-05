@@ -1,0 +1,25 @@
+.green-btn {
+  background-color: #26ad26 !important;
+  border-color: #26ad26 !important;
+  color: white !important;
+  font-weight: 700;
+}
+
+.green-btn:hover {
+  background-color: #26ad26cd !important;
+  border-color: #26ad26cd !important;
+  color: white !important;
+}
+
+.red-btn {
+  background-color: white !important;
+  border-color: #ba2727 !important;
+  color: #ba2727 !important;
+  font-weight: 700;
+}
+
+.red-btn:hover {
+  background-color: white !important;
+  border-color: #ba2727c0!important;
+  color: #ba2727c0 !important;
+}

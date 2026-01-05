@@ -74,12 +74,16 @@ const SignUp = () => {
       <NavBar />
       <Box
         sx={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          display: "grid",
+          placeItems: "center",
           bgcolor: "#f5f5f5",
           px: 2,
+          pt: "64px",
         }}
       >
         <Paper
@@ -99,7 +103,7 @@ const SignUp = () => {
             </Alert>
           )}
 
-          <form onSubmit={handleSubmit}>
+          <form id="part" onSubmit={handleSubmit}>
             <TextField
               fullWidth
               label="Email"
@@ -146,11 +150,11 @@ const SignUp = () => {
                   borderRadius: "25px",
                   textTransform: "none",
                   color: "#333",
-                   borderColor: "#FFDA00",
-                   "&:hover": {
-                  borderColor: "#e6c500",
-                  backgroundColor: "#fffbe6",
-                },
+                  borderColor: "#FFDA00",
+                  "&:hover": {
+                    borderColor: "#e6c500",
+                    backgroundColor: "#fffbe6",
+                  },
                 }}
               >
                 Already have an account? Login

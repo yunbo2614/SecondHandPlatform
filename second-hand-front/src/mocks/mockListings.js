@@ -1,0 +1,56 @@
+export const mockListings = {
+  success: true,
+  data: {
+    total_pages: 3,
+    posts: [
+      {
+        id: "1",
+        title: "iPhone 13 Pro Max",
+        price: 850,
+        description: "Excellent condition, 256GB, graphite.",
+        status: "available",
+        image_urls: ["https://picsum.photos/seed/iphone13/400/300"],
+      },
+      {
+        id: "2",
+        title: "MacBook Air M1",
+        price: 720,
+        description: "Lightly used, battery health 92%.",
+        status: "sold",
+        image_urls: ["https://picsum.photos/seed/macbook/400/300"],
+      },
+      {
+        id: "3",
+        title: "Sony WH-1000XM5 Headphones",
+        price: 280,
+        description: "Noise cancelling, like new.",
+        status: "available",
+        image_urls: ["https://picsum.photos/seed/sony/400/300"],
+      },
+      {
+        id: "4",
+        title: "Gaming Chair",
+        price: 150,
+        description: "Ergonomic, adjustable height.",
+        status: "available",
+        image_urls: ["https://picsum.photos/seed/chair/400/300"],
+      },
+      {
+        id: "5",
+        title: "Apple Watch Series 7",
+        price: 320,
+        description: "45mm, GPS, midnight color.",
+        status: "sold",
+        image_urls: ["https://picsum.photos/seed/ipad/400/300"],
+      },
+      {
+        id: "6",
+        title: "Mechanical Keyboard",
+        price: 110,
+        description: "RGB, blue switches.",
+        status: "available",
+        image_urls: ["https://picsum.photos/seed/keyboard/400/300"],
+      },
+    ],
+  },
+};

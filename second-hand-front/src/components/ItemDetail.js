@@ -40,12 +40,12 @@ import ButtonBase from "@mui/material/ButtonBase";
 import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip";
 
-import { BASE_URL } from "../constants";
+import { BASE_URL, USE_MOCK } from "../constants";
 
 // ========================================
 // Mock数据（已注释，使用真实后端数据）
 // ========================================
-// import { mockItem } from "../mocks/ItemDetailMock";
+import { mockItem } from "../mocks/ItemDetailMock";
 // const USE_MOCK = false;
 
 function ItemDetail({ handleLogout }) {
@@ -73,6 +73,11 @@ function ItemDetail({ handleLogout }) {
       setError(""); // 清除之前的错误
 
       try {
+        if (USE_MOCK) {
+          setItem(mockItem);
+          setLoading(false);
+          return;
+        }
         // 从localStorage获取JWT token
         const token = localStorage.getItem(TOKEN_KEY);
 
@@ -162,147 +167,304 @@ function ItemDetail({ handleLogout }) {
   return (
     <Box>
       {/* 修复：添加缺失的 handleLogout 属性 */}
-      <NavBar handleLogout={handleLogout}/>
+      <NavBar />
 
       <Box sx={{ maxWidth: 1100, mx: "auto", mt: 3, px: 2 }}>
         <Box
           sx={{
             display: "grid",
-            gridTemplateColumns: { xs: "1fr", md: "110px 1fr 320px" },
-            gap: 2,
+            gridTemplateColumns: { xs: "1fr", md: "110px 1fr 360px" },
+            gap: { xs: 2, md: 3 },
             alignItems: "start",
           }}
         >
-          {/* 左侧：缩略图列表（根据后端返回的image_urls数组动态生成） */}
           <Box
             sx={{
               display: "flex",
               flexDirection: { xs: "row", md: "column" },
               gap: 1,
               overflowX: { xs: "auto", md: "visible" },
+              overflowY: { xs: "visible", md: "auto" },
+              pr: { md: 0.5 },
               pb: { xs: 1, md: 0 },
+              maxHeight: { md: 520 },
+              scrollSnapType: { xs: "x mandatory", md: "y proximity" },
+              "&::-webkit-scrollbar": { width: 8, height: 8 },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "rgba(0,0,0,0.15)",
+                borderRadius: 99,
+              },
             }}
           >
-            {/* 遍历图片数组，为每张图片创建缩略图按钮 */}
-            {/* 后端返回几个URL就显示几张图片 */}
-            {images.map((img, idx) => (
-              <ButtonBase
-                key={idx}
-                onClick={() => setSelectedImage(img)} // 点击时切换主图
-                sx={{
-                  width: 90,
-                  height: 90,
-                  borderRadius: 1.2,
-                  overflow: "hidden",
-                  border: "1px solid",
-                  // 当前选中的缩略图显示蓝色边框
-                  borderColor:
-                    selectedImage === img ? "primary.main" : "divider",
-                  flex: "0 0 auto",
-                }}
-              >
-                <Box
-                  component="img"
-                  src={img}
-                  alt={`thumb-${idx}`}
-                  sx={{ width: "100%", height: "100%", objectFit: "cover" }}
-                />
-              </ButtonBase>
-            ))}
+            {images.map((img, idx) => {
+              const isActive = selectedImage === img;
+              return (
+                <ButtonBase
+                  key={idx}
+                  onClick={() => setSelectedImage(img)}
+                  sx={{
+                    scrollSnapAlign: "start",
+                    width: 86,
+                    height: 86,
+                    borderRadius: 2,
+                    overflow: "hidden",
+                    position: "relative",
+                    border: "2px solid",
+                    borderColor: isActive ? "primary.main" : "divider",
+                    boxShadow: isActive ? 3 : 0,
+                    transform: isActive ? "scale(1.03)" : "none",
+                    transition: "all .15s ease",
+                    flex: "0 0 auto",
+                    "&:hover": {
+                      transform: "scale(1.03)",
+                      boxShadow: 3,
+                    },
+                    "&::after": isActive
+                      ? {
+                          content: '""',
+                          position: "absolute",
+                          inset: 0,
+                          background:
+                            "linear-gradient(180deg, rgba(25,118,210,0.00), rgba(25,118,210,0.10))",
+                        }
+                      : undefined,
+                  }}
+                >
+                  <Box
+                    component="img"
+                    src={img}
+                    alt={`thumb-${idx}`}
+                    sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                </ButtonBase>
+              );
+            })}
           </Box>
 
-          {/* 中间：主图显示区域 */}
           <Paper
             variant="outlined"
             sx={{
-              height: { xs: 320, md: 420 },
-              bgcolor: "#f3f3f3",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              borderRadius: 3,
               overflow: "hidden",
-              borderRadius: 2,
+              bgcolor: "grey.50",
+              position: "relative",
+              boxShadow: { xs: 1, md: 2 },
             }}
           >
-            {selectedImage ? (
-              <Box
-                component="img"
-                src={selectedImage}
-                alt="main"
-                sx={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "contain",
+            <Box
+              sx={{
+                position: "absolute",
+                inset: 0,
+                background:
+                  "radial-gradient(800px 300px at 20% 10%, rgba(25,118,210,0.10), transparent 60%), radial-gradient(700px 250px at 80% 90%, rgba(156,39,176,0.08), transparent 60%)",
+                pointerEvents: "none",
+              }}
+            />
+            <Box
+              sx={{
+                height: { xs: 320, md: 520 },
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                p: { xs: 1.5, md: 2 },
+                position: "relative",
+              }}
+            >
+              {selectedImage ? (
+                <Box
+                  component="img"
+                  src={selectedImage}
+                  alt="main"
+                  sx={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                    borderRadius: 2,
+                    filter: "drop-shadow(0 10px 18px rgba(0,0,0,0.18))",
+                  }}
+                />
+              ) : (
+                <Box
+                  sx={{
+                    width: "100%",
+                    height: "100%",
+                    borderRadius: 2,
+                    bgcolor: "grey.200",
+                  }}
+                />
+              )}
+
+              <ButtonBase
+                onClick={() => {
+                  if (!images.length) return;
+                  const cur = images.indexOf(selectedImage);
+                  const nextIdx = cur <= 0 ? images.length - 1 : cur - 1;
+                  setSelectedImage(images[nextIdx]);
                 }}
-              />
-            ) : (
-              <Box sx={{ width: "90%", height: "90%", bgcolor: "#ddd" }} />
-            )}
+                sx={{
+                  position: "absolute",
+                  left: 12,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  width: 44,
+                  height: 44,
+                  borderRadius: 99,
+                  bgcolor: "rgba(255,255,255,0.92)",
+                  border: "1px solid",
+                  borderColor: "divider",
+                  boxShadow: 3,
+                  backdropFilter: "blur(6px)",
+                  display: images.length > 1 ? "grid" : "none",
+                  placeItems: "center",
+                  fontSize: 18,
+                  fontWeight: 900,
+                  userSelect: "none",
+                  transition: "transform .15s ease, box-shadow .15s ease",
+                  "&:hover": {
+                    transform: "translateY(-50%) scale(1.05)",
+                    boxShadow: 6,
+                  },
+                }}
+                aria-label="Previous image"
+              >
+                {"<"}
+              </ButtonBase>
+
+              <ButtonBase
+                onClick={() => {
+                  if (!images.length) return;
+                  const cur = images.indexOf(selectedImage);
+                  const nextIdx =
+                    cur === -1 || cur === images.length - 1 ? 0 : cur + 1;
+                  setSelectedImage(images[nextIdx]);
+                }}
+                sx={{
+                  position: "absolute",
+                  right: 12,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  width: 44,
+                  height: 44,
+                  borderRadius: 99,
+                  bgcolor: "rgba(255,255,255,0.92)",
+                  border: "1px solid",
+                  borderColor: "divider",
+                  boxShadow: 3,
+                  backdropFilter: "blur(6px)",
+                  display: images.length > 1 ? "grid" : "none",
+                  placeItems: "center",
+                  fontSize: 18,
+                  fontWeight: 900,
+                  userSelect: "none",
+                  transition: "transform .15s ease, box-shadow .15s ease",
+                  "&:hover": {
+                    transform: "translateY(-50%) scale(1.05)",
+                    boxShadow: 6,
+                  },
+                }}
+                aria-label="Next image"
+              >
+                {">"}
+              </ButtonBase>
+              {images.length > 0 && (
+                <Chip
+                  label={`${Math.max(1, images.indexOf(selectedImage) + 1)}/${
+                    images.length
+                  }`}
+                  size="small"
+                  sx={{
+                    position: "absolute",
+                    bottom: 12,
+                    right: 12,
+                    bgcolor: "rgba(0,0,0,0.65)",
+                    color: "white",
+                    fontWeight: 800,
+                    letterSpacing: 0.3,
+                  }}
+                />
+              )}
+            </Box>
           </Paper>
 
-          {/* 右侧：商品信息面板 */}
           <Paper
             variant="outlined"
             sx={{
-              p: 2,
-              bgcolor: "#f7f7f7",
-              borderRadius: 2,
+              p: 2.25,
+              borderRadius: 3,
+              bgcolor: "background.paper",
+              boxShadow: { xs: 0, md: 1 },
+              position: { md: "sticky" },
+              top: { md: 88 },
             }}
           >
-            {/* 商品标题和SOLD标签 */}
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "flex-start",
+                justifyContent: "space-between",
+                gap: 1.5,
+              }}
+            >
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: 900, lineHeight: 1.2 }}
+              >
                 {displayName}
               </Typography>
 
-              {/* 根据status字段判断是否已售出 */}
               {item.status === "sold" && (
                 <Chip
                   label="SOLD"
                   color="error"
                   size="small"
-                  sx={{ fontWeight: 800 }}
+                  sx={{ fontWeight: 900, mt: 0.25 }}
                 />
               )}
             </Box>
 
-            <Divider sx={{ my: 1.5 }} />
-
-            {/* 卖家信息（从user对象中获取） */}
-            <InfoRow
-              label="Posted by"
-              value={item.user?.username || "Unknown"}
-            />
-            {/* 发布日期（格式化显示） */}
-            <InfoRow
-              label="Date"
-              value={
-                item.created_at
-                  ? new Date(item.created_at).toLocaleDateString()
-                  : "-"
-              }
-            />
-
-            {/* 商品描述 */}
-            <Box sx={{ mt: 2 }}>
-              <Typography variant="body2" sx={{ fontWeight: 700, mb: 0.5 }}>
-                Description:
+            <Box sx={{ mt: 1 }}>
+              <Typography variant="h5" sx={{ fontWeight: 900 }}>
+                {formatPrice(item.price)}
               </Typography>
-              <Typography
-                variant="body2"
-                sx={{ whiteSpace: "pre-wrap", color: "text.secondary" }}
-              >
-                {item.description || "-"}
-              </Typography>
+              {item.negotiable && (
+                <Chip
+                  label="Negotiable"
+                  size="small"
+                  sx={{ mt: 1, fontWeight: 700 }}
+                />
+              )}
             </Box>
 
-            {/* 联系和交易信息 */}
-            <Box sx={{ mt: 2 }}>
+            <Divider sx={{ my: 2 }} />
+
+            <Box sx={{ display: "grid", gap: 0.75 }}>
+              <InfoRow
+                label="Posted by"
+                value={item.user?.username || "Unknown"}
+              />
+              <InfoRow
+                label="Date"
+                value={
+                  item.created_at
+                    ? new Date(item.created_at).toLocaleDateString()
+                    : "-"
+                }
+              />
               <InfoRow label="Contact" value={item.contact_info} />
               <InfoRow label="Zip Code" value={item.zip_code} />
-              <InfoRow label="Price" value={formatPrice(item.price)} />
-              <InfoRow label="Negotiable" value={formatBool(item.negotiable)} />
             </Box>
+
+            <Divider sx={{ my: 2 }} />
+
+            <Typography variant="body2" sx={{ fontWeight: 900, mb: 0.75 }}>
+              Description
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{ whiteSpace: "pre-wrap", color: "text.secondary" }}
+            >
+              {item.description || "-"}
+            </Typography>
           </Paper>
         </Box>
       </Box>
