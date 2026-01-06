@@ -77,7 +77,10 @@ func GetPostByID(postID int) (*models.Post, error) {
 
 	var post models.Post
 	// 查询指定ID的商品，并预加载用户信息
-	if err := db.Preload("User").First(&post, postID).Error; err != nil {
+	// 只允许查看未删除的商品（active和sold状态都可以查看，但deleted不行）
+	if err := db.Preload("User").
+		Where("id = ? AND status != ?", postID, "deleted").
+		First(&post).Error; err != nil {
 		return nil, err
 	}
 
@@ -251,6 +254,51 @@ func UpdatePost(req UpdatePostRequest) (*models.Post, error) {
 	}
 
 	// 4. 重新加载更新后的数据（包含用户信息）
+	if err := db.Preload("User").First(&post, req.PostID).Error; err != nil {
+		return nil, err
+	}
+
+	return &post, nil
+}
+
+// UpdatePostStatusRequest 更新商品状态请求
+type UpdatePostStatusRequest struct {
+	PostID int    // 商品ID
+	UserID int    // 用户ID（用于权限验证）
+	Status string // 新状态（如 "sold"）
+}
+
+// UpdatePostStatus 更新商品状态（例如标记为已售出）
+func UpdatePostStatus(req UpdatePostStatusRequest) (*models.Post, error) {
+	db := database.GetDB()
+
+	// 1. 先查询该商品是否存在
+	var post models.Post
+	if err := db.First(&post, req.PostID).Error; err != nil {
+		return nil, err // 商品不存在
+	}
+
+	// 2. 验证该商品是否属于当前用户
+	if post.UserID != req.UserID {
+		return nil, fmt.Errorf("unauthorized: you can only update your own posts")
+	}
+
+	// 3. 验证状态值是否合法
+	validStatuses := map[string]bool{
+		"active":  true,
+		"sold":    true,
+		"deleted": true,
+	}
+	if !validStatuses[req.Status] {
+		return nil, fmt.Errorf("invalid status: must be one of active, sold, deleted")
+	}
+
+	// 4. 更新状态
+	if err := db.Model(&post).Update("status", req.Status).Error; err != nil {
+		return nil, err
+	}
+
+	// 5. 重新加载更新后的数据（包含用户信息）
 	if err := db.Preload("User").First(&post, req.PostID).Error; err != nil {
 		return nil, err
 	}

@@ -223,4 +223,58 @@ func editPostHandler(w http.ResponseWriter, r *http.Request) {
 	utils.SendSuccessWithMessage(w, "Post updated successfully", post)
 }
 
+// updatePostStatusHandler 更新商品状态（例如标记为已售出）
+// PUT /items/{id}?status=sold
+func updatePostStatusHandler(w http.ResponseWriter, r *http.Request) {
+	// 1. 从 Context 中获取用户ID
+	userID, ok := r.Context().Value("userID").(int)
+	if !ok {
+		utils.SendErrorResponse(w, http.StatusUnauthorized, "User not authenticated")
+		return
+	}
+
+	// 2. 从 URL 路径中获取商品ID
+	vars := mux.Vars(r)
+	postIDStr := vars["id"]
+	postID, err := strconv.Atoi(postIDStr)
+	if err != nil {
+		utils.SendErrorResponse(w, http.StatusBadRequest, "Invalid post ID")
+		return
+	}
+
+	// 3. 从查询参数中获取 status
+	status := r.URL.Query().Get("status")
+	if status == "" {
+		utils.SendErrorResponse(w, http.StatusBadRequest, "Status query parameter is required")
+		return
+	}
+
+	// 4. 调用 service 层更新商品状态
+	post, err := service.UpdatePostStatus(service.UpdatePostStatusRequest{
+		PostID: postID,
+		UserID: userID,
+		Status: status,
+	})
+	if err != nil {
+		// 判断错误类型
+		if err.Error() == "record not found" {
+			utils.SendErrorResponse(w, http.StatusNotFound, "Post not found")
+			return
+		}
+		if err.Error() == "unauthorized: you can only update your own posts" {
+			utils.SendErrorResponse(w, http.StatusForbidden, "You can only update your own posts")
+			return
+		}
+		if err.Error() == "invalid status: must be one of active, sold, deleted" {
+			utils.SendErrorResponse(w, http.StatusBadRequest, err.Error())
+			return
+		}
+		utils.SendErrorResponse(w, http.StatusInternalServerError, "Failed to update post status: "+err.Error())
+		return
+	}
+
+	// 5. 返回成功响应
+	utils.SendSuccessWithMessage(w, "Post status updated successfully", post)
+}
+
 // TODO: 实现其他商品相关的 handlers
