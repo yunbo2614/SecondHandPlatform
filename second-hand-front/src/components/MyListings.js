@@ -171,7 +171,7 @@ function MyListings() {
   // };
 
   const handleOpenEdit = (item) => {
-    setEditingItem({ ...item });
+    setEditingItem({ item });
     setOpenEdit(true);
   };
 
@@ -644,7 +644,7 @@ function MyListings() {
         <DialogTitle sx={{ fontWeight: "bold" }}>Delete Listing?</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete{" "}
+            Are you sure you want to delete
             <strong>"{itemToDelete?.title}"</strong>?
             <br />
             This action <strong>cannot be undone</strong>.
@@ -662,7 +662,7 @@ function MyListings() {
           </Button>
           <Button
             className="red-btn"
-            onClick={handleDelete}
+            onClick={handleConfirmDelete}
             variant="contained"
             sx={{ borderRadius: "20px", fontWeight: "bold" }}
           >
