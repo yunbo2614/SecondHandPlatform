@@ -109,13 +109,13 @@ function MyListings() {
     }
   };
 
-  // Handle Mark as Sold (API: PUT /items/{id}?status=sold)
+  // Handle Mark as Sold (API: PUT /item/{id}/status?status=sold)
   const handleMarkAsSold = async () => {
     if (!itemToMarkSold) return;
 
     try {
       const response = await axios.put(
-        `${BASE_URL}/items/${itemToMarkSold.id}?status=sold`,
+        `${BASE_URL}/item/${itemToMarkSold.id}/status?status=sold`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
