@@ -662,7 +662,10 @@ function MyListings() {
           </Button>
           <Button
             className="red-btn"
-            onClick={handleConfirmDelete}
+            onClick={() => {
+              handleConfirmDelete();
+              setDeleteDialogOpen(false);
+            }}
             variant="contained"
             sx={{ borderRadius: "20px", fontWeight: "bold" }}
           >

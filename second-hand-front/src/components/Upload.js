@@ -258,7 +258,7 @@ function UploadPage({ handleLogout }) {
               </Button>
               {!canPublish && (
                 <div className="sell-actions-note">
-                  please compelete all required<span className="req">*</span>{" "}
+                  please complete all required<span className="req">*</span>{" "}
                   fields
                 </div>
               )}
