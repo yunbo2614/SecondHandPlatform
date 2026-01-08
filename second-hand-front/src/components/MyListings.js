@@ -171,7 +171,12 @@ function MyListings() {
   // };
 
   const handleOpenEdit = (item) => {
-    setEditingItem({ item });
+    setEditingItem({
+      id: item.id,
+      title: item.title,
+      price: item.price,
+      description: item.description,
+    });
     setOpenEdit(true);
   };
 
